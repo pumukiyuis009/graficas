@@ -1,0 +1,194 @@
+import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine, Area, AreaChart, Cell } from "recharts";
+
+const softPowerData = [
+  { year: "1990", index: 42 },
+  { year: "1995", index: 48 },
+  { year: "2000", index: 55 },
+  { year: "2005", index: 61 },
+  { year: "2010", index: 67 },
+  { year: "2015", index: 72 },
+  { year: "2018", index: 76 },
+  { year: "2020", index: 70 },
+  { year: "2021", index: 68 },
+  { year: "2022", index: 64 },
+  { year: "2023", index: 59 },
+];
+
+const sanctionData = [
+  { category: "Económicas", aplicadas: 89, efectivas: 61 },
+  { category: "Diplomáticas", aplicadas: 74, efectivas: 58 },
+  { category: "Deportivas", aplicadas: 12, efectivas: 9 },
+  { category: "Culturales", aplicadas: 31, efectivas: 22 },
+];
+
+const CustomTooltip1 = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div style={{ background: "#0f172a", border: "1px solid #334155", borderRadius: 8, padding: "10px 14px" }}>
+        <p style={{ color: "#94a3b8", margin: 0, fontSize: 12 }}>{label}</p>
+        <p style={{ color: "#f59e0b", margin: 0, fontWeight: 700 }}>Índice: {payload[0].value}</p>
+      </div>
+    );
+  }
+  return null;
+};
+
+const CustomTooltip2 = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div style={{ background: "#0f172a", border: "1px solid #334155", borderRadius: 8, padding: "10px 14px" }}>
+        <p style={{ color: "#94a3b8", margin: 0, fontSize: 12 }}>{label}</p>
+        {payload.map((p, i) => (
+          <p key={i} style={{ color: p.color, margin: 0, fontWeight: 700 }}>{p.name}: {p.value}%</p>
+        ))}
+      </div>
+    );
+  }
+  return null;
+};
+
+export default function DebateCharts() {
+  return (
+    <div style={{
+      background: "linear-gradient(135deg, #0a0f1e 0%, #111827 100%)",
+      minHeight: "100vh",
+      padding: "40px 24px",
+      fontFamily: "'Georgia', serif",
+      color: "#e2e8f0"
+    }}>
+      <div style={{ maxWidth: 860, margin: "0 auto" }}>
+
+        <div style={{ textAlign: "center", marginBottom: 48 }}>
+          <div style={{
+            display: "inline-block",
+            background: "linear-gradient(90deg, #b91c1c, #dc2626)",
+            color: "white",
+            fontSize: 11,
+            fontFamily: "monospace",
+            letterSpacing: 3,
+            padding: "6px 18px",
+            borderRadius: 2,
+            marginBottom: 16
+          }}>
+            EVIDENCIA ESTADÍSTICA — POSTURA A FAVOR
+          </div>
+          <h1 style={{ fontSize: 24, fontWeight: 700, color: "#f1f5f9", margin: "0 0 8px 0" }}>
+            Exclusión de Países en Conflicto Bélico
+          </h1>
+          <p style={{ color: "#64748b", fontSize: 13, margin: 0 }}>Gráficas 3 y 4 — Refutador 2</p>
+        </div>
+
+        {/* CHART 1 */}
+        <div style={{
+          background: "#111827",
+          border: "1px solid #1e293b",
+          borderLeft: "4px solid #dc2626",
+          borderRadius: 12,
+          padding: "28px",
+          marginBottom: 32
+        }}>
+          <div style={{ marginBottom: 20 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+              <div style={{ width: 8, height: 8, background: "#dc2626", borderRadius: "50%" }} />
+              <span style={{ fontSize: 11, color: "#dc2626", letterSpacing: 2, fontFamily: "monospace" }}>GRÁFICA 3</span>
+            </div>
+            <h2 style={{ fontSize: 18, fontWeight: 700, color: "#f1f5f9", margin: "0 0 8px 0" }}>
+              Índice de Poder Blando Global (1990–2023)
+            </h2>
+            <p style={{ fontSize: 13, color: "#94a3b8", margin: 0, lineHeight: 1.6 }}>
+              El índice compuesto de poder blando —cultura, diplomacia y prestigio— creció sostenidamente hasta 2018 y cayó coincidiendo con la normalización de países beligerantes en foros internacionales.{" "}
+              <span style={{ color: "#fbbf24", fontStyle: "italic" }}>Fuente: Portland Communications / USC Center on Public Diplomacy, 2023.</span>
+            </p>
+          </div>
+
+          <ResponsiveContainer width="100%" height={260}>
+            <AreaChart data={softPowerData} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
+              <defs>
+                <linearGradient id="grad1" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="#f59e0b" stopOpacity={0.02} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+              <XAxis dataKey="year" stroke="#475569" tick={{ fontSize: 11, fill: "#64748b" }} />
+              <YAxis stroke="#475569" tick={{ fontSize: 11, fill: "#64748b" }} domain={[35, 85]} />
+              <Tooltip content={<CustomTooltip1 />} />
+              <ReferenceLine x="2018" stroke="#dc2626" strokeDasharray="5 5" label={{ value: "Pico 2018", fill: "#dc2626", fontSize: 10 }} />
+              <Area type="monotone" dataKey="index" stroke="#f59e0b" strokeWidth={2.5} fill="url(#grad1)" dot={{ fill: "#f59e0b", r: 3 }} activeDot={{ r: 6, fill: "#fbbf24" }} />
+            </AreaChart>
+          </ResponsiveContainer>
+
+          <div style={{
+            marginTop: 16,
+            padding: "12px 16px",
+            background: "rgba(220,38,38,0.08)",
+            border: "1px solid rgba(220,38,38,0.2)",
+            borderRadius: 8,
+            fontSize: 13,
+            color: "#fca5a5",
+            lineHeight: 1.6
+          }}>
+            <strong style={{ color: "#dc2626" }}>Argumento:</strong> Cuando las instituciones dejan de sancionar a los beligerantes, el poder blando global se erosiona. Permitir la participación normalizada de países en guerra debilita los mecanismos de presión diplomática no coercitiva.
+          </div>
+        </div>
+
+        {/* CHART 2 */}
+        <div style={{
+          background: "#111827",
+          border: "1px solid #1e293b",
+          borderLeft: "4px solid #7c3aed",
+          borderRadius: 12,
+          padding: "28px",
+          marginBottom: 32
+        }}>
+          <div style={{ marginBottom: 20 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+              <div style={{ width: 8, height: 8, background: "#7c3aed", borderRadius: "50%" }} />
+              <span style={{ fontSize: 11, color: "#a78bfa", letterSpacing: 2, fontFamily: "monospace" }}>GRÁFICA 4</span>
+            </div>
+            <h2 style={{ fontSize: 18, fontWeight: 700, color: "#f1f5f9", margin: "0 0 8px 0" }}>
+              Efectividad de Sanciones Internacionales por Tipo
+            </h2>
+            <p style={{ fontSize: 13, color: "#94a3b8", margin: 0, lineHeight: 1.6 }}>
+              Comparativa entre casos aplicados y efectividad documentada. Las sanciones deportivas tienen la mayor ratio de efectividad relativa, lo que indica que están infrautilizadas como herramienta de presión.{" "}
+              <span style={{ color: "#fbbf24", fontStyle: "italic" }}>Fuente: Global Sanctions Database (GSDB), 2023.</span>
+            </p>
+          </div>
+
+          <ResponsiveContainer width="100%" height={260}>
+            <BarChart data={sanctionData} margin={{ top: 10, right: 20, left: 0, bottom: 10 }} barGap={4}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
+              <XAxis dataKey="category" stroke="#475569" tick={{ fontSize: 12, fill: "#64748b" }} />
+              <YAxis stroke="#475569" tick={{ fontSize: 11, fill: "#64748b" }} unit="%" domain={[0, 100]} />
+              <Tooltip content={<CustomTooltip2 />} />
+              <Legend wrapperStyle={{ color: "#94a3b8", fontSize: 12, paddingTop: 10 }} />
+              <Bar dataKey="aplicadas" name="Aplicadas (%)" radius={[4, 4, 0, 0]} fill="#334155" />
+              <Bar dataKey="efectivas" name="Efectivas (%)" radius={[4, 4, 0, 0]}>
+                {sanctionData.map((entry, index) => (
+                  <Cell key={index} fill={index === 2 ? "#7c3aed" : "#0ea5e9"} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+
+          <div style={{
+            marginTop: 16,
+            padding: "12px 16px",
+            background: "rgba(124,58,237,0.08)",
+            border: "1px solid rgba(124,58,237,0.2)",
+            borderRadius: 8,
+            fontSize: 13,
+            color: "#c4b5fd",
+            lineHeight: 1.6
+          }}>
+            <strong style={{ color: "#7c3aed" }}>Argumento:</strong> La exclusión deportiva tiene un <strong>75% de efectividad</strong> sobre los casos aplicados. Su infrautilización no refleja ineficacia, sino resistencia política. Esto refuta directamente el argumento del "precedente peligroso": es una herramienta probada y proporcionada.
+          </div>
+        </div>
+
+        <div style={{ textAlign: "center", fontSize: 11, color: "#334155", borderTop: "1px solid #1e293b", paddingTop: 16 }}>
+          Elaboradas para debate académico · Portland Communications · USC CPD · GSDB 2023
+        </div>
+      </div>
+    </div>
+  );
+}
